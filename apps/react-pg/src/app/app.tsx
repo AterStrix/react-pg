@@ -60,7 +60,7 @@ export const App = () => {
           <NavLink to={to}>Add Game</NavLink>
         </nav>
       </Header>
-      <Compose items={{ Test1, Test2 }} />
+      <Compose items={[ Test1, Test2, Test1 ]} />
       <div className="container" data-testid="app-container">
         <div className="games-layout">
           {state.loading
