@@ -13,8 +13,25 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "noImplicitAny": false,
     "baseUrl": ".",
-    "paths": {}
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@nx-playground/react-pg/feature-game-detail": [
+        "libs/react-pg/feature-game-detail/src/index.ts"
+      ],
+      "@nx-playground/react-pg/ui-shared": [
+        "libs/react-pg/ui-shared/src/index.ts"
+      ],
+      "@nx-playground/react-pg/util-formatters": [
+        "libs/react-pg/util-formatters/src/index.ts"
+      ],
+      "@nx-playground/axios-react-api": ["libs/axios-react-api/src/index.ts"],
+      "@nx-playground/react-pg/feature-game-add": [
+        "libs/react-pg/feature-game-add/src/index.ts"
+      ],
+      "@nx-playground/react-hook-form": ["libs/react-hook-form/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

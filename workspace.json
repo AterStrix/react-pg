@@ -23,6 +23,56 @@
     }
   },
   "projects": {
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps/api/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/api",
+            "main": "apps/api/src/main.ts",
+            "tsConfig": "apps/api/tsconfig.app.json",
+            "assets": ["apps/api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/api/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/api"],
+          "options": {
+            "jestConfig": "apps/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "react-pg": {
       "root": "apps/react-pg",
       "sourceRoot": "apps/react-pg/src",
@@ -74,7 +124,8 @@
           "executor": "@nrwl/web:dev-server",
           "options": {
             "buildTarget": "react-pg:build",
-            "hmr": true
+            "hmr": true,
+            "proxyConfig": "apps/react-pg/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -121,6 +172,193 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/react-pg-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "react-pg-feature-game-detail": {
+      "root": "libs/react-pg/feature-game-detail",
+      "sourceRoot": "libs/react-pg/feature-game-detail/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/react-pg/feature-game-detail/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/react-pg/feature-game-detail"],
+          "options": {
+            "jestConfig": "libs/react-pg/feature-game-detail/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pg-ui-shared": {
+      "root": "libs/react-pg/ui-shared",
+      "sourceRoot": "libs/react-pg/ui-shared/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/react-pg/ui-shared/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/react-pg/ui-shared"],
+          "options": {
+            "jestConfig": "libs/react-pg/ui-shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "executor": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/react-pg/ui-shared/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "executor": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/react-pg-ui-shared",
+            "config": {
+              "configFolder": "libs/react-pg/ui-shared/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
+    "react-pg-util-formatters": {
+      "root": "libs/react-pg/util-formatters",
+      "sourceRoot": "libs/react-pg/util-formatters/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/react-pg/util-formatters/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/react-pg/util-formatters"],
+          "options": {
+            "jestConfig": "libs/react-pg/util-formatters/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pg-ui-shared-e2e": {
+      "root": "apps/react-pg-ui-shared-e2e",
+      "sourceRoot": "apps/react-pg-ui-shared-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/react-pg-ui-shared-e2e/cypress.json",
+            "tsConfig": "apps/react-pg-ui-shared-e2e/tsconfig.e2e.json",
+            "devServerTarget": "react-pg-ui-shared:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "react-pg-ui-shared:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/react-pg-ui-shared-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "axios-react-api": {
+      "root": "libs/axios-react-api",
+      "sourceRoot": "libs/axios-react-api/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/axios-react-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/axios-react-api"],
+          "options": {
+            "jestConfig": "libs/axios-react-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-pg-feature-game-add": {
+      "root": "libs/react-pg/feature-game-add",
+      "sourceRoot": "libs/react-pg/feature-game-add/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/react-pg/feature-game-add/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/react-pg/feature-game-add"],
+          "options": {
+            "jestConfig": "libs/react-pg/feature-game-add/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "react-hook-form": {
+      "root": "libs/react-hook-form",
+      "sourceRoot": "libs/react-hook-form/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/react-hook-form/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/react-hook-form"],
+          "options": {
+            "jestConfig": "libs/react-hook-form/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

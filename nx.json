@@ -14,17 +14,48 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "build-storybook"
+        ]
       }
     }
   },
   "projects": {
+    "api": {
+      "tags": []
+    },
     "react-pg": {
       "tags": []
     },
     "react-pg-e2e": {
       "tags": [],
       "implicitDependencies": ["react-pg"]
+    },
+    "react-pg-feature-game-detail": {
+      "tags": []
+    },
+    "react-pg-ui-shared": {
+      "tags": []
+    },
+    "react-pg-util-formatters": {
+      "tags": []
+    },
+    "react-pg-ui-shared-e2e": {
+      "tags": [],
+      "implicitDependencies": ["react-pg-ui-shared"]
+    },
+    "axios-react-api": {
+      "tags": []
+    },
+    "react-pg-feature-game-add": {
+      "tags": []
+    },
+    "react-hook-form": {
+      "tags": []
     }
   }
 }
