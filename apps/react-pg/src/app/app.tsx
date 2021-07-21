@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './app.scss';
 
@@ -18,6 +18,10 @@ import { Api, Response } from '@nx-playground/axios-react-api';
 
 import { ReactPgFeatureGameAdd } from '@nx-playground/react-pg/feature-game-add';
 
+import { useColor } from './context';
+import { Compose } from './compose';
+import { Test1 } from './test1';
+import { Test2 } from './test2';
 interface Game {
   id: string;
   name: string;
@@ -29,11 +33,14 @@ interface Game {
 
 export const App = () => {
   const history = useHistory();
+
   const [state, setState] = useState<Response<Game[]>>({
     data: [] as Game[],
   } as Response<Game[]>);
 
   const [to, setTo] = useState<string>('/game-add');
+
+  const { color, toggleColor } = useColor();
 
   useEffect(() => {
     const apiCall = Api.get<Game[]>('/api/games', null, []);
@@ -53,6 +60,7 @@ export const App = () => {
           <NavLink to={to}>Add Game</NavLink>
         </nav>
       </Header>
+      <Compose items={{ Test1, Test2 }} />
       <div className="container" data-testid="app-container">
         <div className="games-layout">
           {state.loading
@@ -79,19 +87,20 @@ export const App = () => {
                       </Typography>
                       <Typography
                         variant="body2"
-                        color="textSecondary"
+                        color={color}
                         component="p"
                       >
                         {x.description}
                       </Typography>
                       <Typography
                         variant="body2"
-                        color="textSecondary"
+                        color={color}
                         component="p"
                         className="game-rating"
                       >
                         <strong>Rating:</strong> {formatRating(x.rating)}
                       </Typography>
+                      <button onClick={toggleColor}>Change color</button>
                     </CardContent>
                   </CardActionArea>
                 </Card>
