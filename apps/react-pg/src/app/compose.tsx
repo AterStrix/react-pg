@@ -1,41 +1,19 @@
-import React, { Component, ReactElement } from "react"
+import React, { ReactNode } from "react"
 
-class Renderer extends React.Component {
-  props: any;
+type Item = React.FC<{ children: ReactNode, [key: string]: unknown }>;
+interface ComposeProps {
+  children: ReactNode;
+  items: (Item|unknown[])[];
+}
 
-  render() {
-      const { wrapper, content } = this.props;
-      return (
-        <wrapper.item>
-          <content.item />
-        </wrapper.item>
-      )
-  }
-};
-class Renderer2 extends React.Component {
-  props: any;
-
-  render() {
-      const { items } = this.props;
-      return <wrapper.item />
-  }
-};
-
-const Renderer3 = (props) => (console.log(props),
-
-  <props.children.item>{props.children.children && <Renderer3>{props.children.children}</Renderer3>}</props.children.item>
-)
-
-export class Compose extends React.Component {
-  props: any;
-
-  render() {
-      const { items } = this.props as any;
-      const makeItem = (item, children) => item.children = { item: children };
-      const makeTree = (items) => items.reduce((acc, item) => makeItem(acc.children || { item: acc }, item));
-
-      console.log(makeTree(items));
-
-      return (<Renderer3>{makeTree(items)}</Renderer3>)
-  }
+export const Compose = (props: ComposeProps) => {
+  const { items, children } = props;
+  const current = { item: (Array.isArray(items[0]) ? items[0][0] : items[0]) as Item };
+  const params = Array.isArray(items[0]) ? items[0][1] : null;
+  const next: unknown = items[1];
+  return (
+    <current.item { ...params }>
+      {next ? <Compose items={items.slice(1)}>{children}</Compose> : children}
+    </current.item>
+  )
 }

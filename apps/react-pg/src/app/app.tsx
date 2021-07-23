@@ -14,53 +14,39 @@ import Typography from '@material-ui/core/Typography';
 import { Route, NavLink, useHistory } from 'react-router-dom';
 
 import { ReactPgFeatureGameDetail } from '@nx-playground/react-pg/feature-game-detail';
-import { Api, Response } from '@nx-playground/axios-react-api';
 
 import { ReactPgFeatureGameAdd } from '@nx-playground/react-pg/feature-game-add';
+import { useGames, Game } from '@nx-playground/react-pg/api';
 
 import { useColor } from './context';
 import { Compose } from './compose';
 import { Test1 } from './test1';
 import { Test2 } from './test2';
-interface Game {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  price: number;
-  rating: number;
-}
 
 export const App = () => {
   const history = useHistory();
 
-  const [state, setState] = useState<Response<Game[]>>({
-    data: [] as Game[],
-  } as Response<Game[]>);
-
-  const [to, setTo] = useState<string>('/game-add');
+  const [ state, dispatchGames ] = useGames();
 
   const { color, toggleColor } = useColor();
 
   useEffect(() => {
-    const apiCall = Api.get<Game[]>('/api/games', null, []);
-    setState(apiCall.initialState);
-    apiCall.promise.then(setState);
-    Api.loading$.subscribe((x) => console.log(x));
-    return () => apiCall.cancel.cancel();
+    dispatchGames({ method: 'GET' });
   }, []);
 
   const onSubmit = data => console.log(data);
+
+  const addGame = (x: Game) => dispatchGames({ method: 'POST', data: [x], refresh: true })
 
   return (
     <>
       <Header title="Board Game Hoard">
         <nav className="main-nav">
           <NavLink to="/" exact={true}>Home</NavLink>
-          <NavLink to={to}>Add Game</NavLink>
+          <NavLink to="/game-add">Add Game</NavLink>
         </nav>
       </Header>
-      <Compose items={[ Test1, Test2, Test1 ]} />
+      <Compose items={[ Test1, Test2, Test1, Test2 ]}><h2>Ololoooo</h2></Compose>
       <div className="container" data-testid="app-container">
         <div className="games-layout">
           {state.loading
@@ -101,6 +87,7 @@ export const App = () => {
                         <strong>Rating:</strong> {formatRating(x.rating)}
                       </Typography>
                       <button onClick={toggleColor}>Change color</button>
+                      <button onClick={() => addGame(x)}>Add game</button>
                     </CardContent>
                   </CardActionArea>
                 </Card>

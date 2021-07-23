@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { useColor } from "./context"
 
-export const Test1 = ({ children }) => {
+export const Test1 = ({ children }: { children: ReactNode }) => {
   const { color } = useColor();
 
   return (

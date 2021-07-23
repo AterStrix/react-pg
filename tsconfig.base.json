@@ -30,7 +30,8 @@
       "@nx-playground/react-pg/feature-game-add": [
         "libs/react-pg/feature-game-add/src/index.ts"
       ],
-      "@nx-playground/react-hook-form": ["libs/react-hook-form/src/index.ts"]
+      "@nx-playground/react-hook-form": ["libs/react-hook-form/src/index.ts"],
+      "@nx-playground/react-pg/api": ["libs/react-pg/api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -362,6 +362,27 @@
           }
         }
       }
+    },
+    "react-pg-api": {
+      "root": "libs/react-pg/api",
+      "sourceRoot": "libs/react-pg/api/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/react-pg/api/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/react-pg/api"],
+          "options": {
+            "jestConfig": "libs/react-pg/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

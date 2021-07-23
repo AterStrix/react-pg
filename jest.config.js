@@ -9,5 +9,6 @@ module.exports = {
     '<rootDir>/libs/axios-react-api',
     '<rootDir>/libs/react-pg/feature-game-add',
     '<rootDir>/libs/react-hook-form',
+    '<rootDir>/libs/react-pg/api',
   ],
 };
